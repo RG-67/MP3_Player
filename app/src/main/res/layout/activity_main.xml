@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MainActivity">
+
+    <!-- Music list -->
+    <RelativeLayout
+        android:id="@+id/musicRel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+    <EditText
+        android:id="@+id/edtSearch"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_bg"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:drawableEnd="@drawable/search"
+        android:hint="Search here.."
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:inputType="text"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/musicRecycler"
+        android:layout_below="@+id/edtSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/music_list_item"
+        tools:itemCount="5"
+        android:layout_marginBottom="10dp"/>
+    </RelativeLayout>
+
+    <!-- Play music -->
+    <RelativeLayout
+        android:id="@+id/playLin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/nature"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/closeBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back"
+            android:layout_margin="20dp"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieMusic"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:lottie_rawRes="@raw/music_rhythm"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:layout_centerInParent="true"
+            app:lottie_colorFilter="@color/purple"/>
+
+        <RelativeLayout
+            android:id="@+id/timeRel"
+            android:layout_below="@+id/lottieMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:id="@+id/originalLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/calibri_normal"
+                android:layout_alignParentStart="true"/>
+            <TextView
+                android:id="@+id/currentLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:fontFamily="@font/calibri_normal"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/progressSeekBar"
+            android:layout_below="@+id/timeRel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressBackgroundTint="@color/purple"/>
+
+        <LinearLayout
+            android:id="@+id/playStyleLin"
+            android:layout_below="@+id/progressSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginVertical="20dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+                <ImageView
+                    android:id="@+id/backwardBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/forward"
+                    android:rotation="180"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="@color/purple"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+                <ImageView
+                    android:id="@+id/playBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/play"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:tint="@color/purple"/>
+
+                <ImageView
+                    android:id="@+id/pauseBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/pause"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="visible"
+                    android:tint="@color/purple"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+                <ImageView
+                    android:id="@+id/forwardBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/forward"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="@color/purple"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
