@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
     }
 
+    // Hiding layout with animation
     private fun hideLayoutAnimation() {
         val fromYDelta = 0f
         val toYDelta = binding.playLin.height.toFloat()
