@@ -7,12 +7,16 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.View
+import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.SeekBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -88,8 +92,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun clickMethod() {
         binding.closeBtn.setOnClickListener {
-            binding.playLin.visibility = View.GONE
-            binding.musicRel.visibility = View.VISIBLE
+            hideLayoutAnimation()
         }
         binding.playBtn.setOnClickListener {
             binding.playBtn.visibility = View.GONE
@@ -103,11 +106,45 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
     }
 
+    private fun hideLayoutAnimation() {
+        val fromYDelta = 0f
+        val toYDelta = binding.playLin.height.toFloat()
+        val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
+        animation.duration = 500
+        animation.fillAfter = true
+        animation.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                binding.playLin.visibility = View.GONE
+                binding.musicRel.visibility = View.VISIBLE
+                setWindow(false)
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {
+
+            }
+
+        })
+        binding.playLin.startAnimation(animation)
+    }
+
     private fun playAudio(uri: Uri) {
         if (serviceBound) {
             binding.musicRel.visibility = View.GONE
             binding.playLin.visibility = View.VISIBLE
+            setWindow(true)
             mediaPlayerService.playAudio(uri)
+        }
+    }
+
+    private fun setWindow(bl: Boolean) {
+        if (bl) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
     }
 
@@ -209,7 +246,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun setProgressSeekbar(duration: Long) {
         binding.progressSeekBar.max = duration.toInt()
-        binding.progressSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+        binding.progressSeekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if (p2) {
                     isUserSeeking = true
@@ -231,7 +269,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 runOnUiThread {
                     try {
                         if (!isUserSeeking) {
-                            binding.progressSeekBar.progress = mediaPlayerService.getCurrentPosition()
+                            binding.progressSeekBar.progress =
+                                mediaPlayerService.getCurrentPosition()
                         }
                         binding.currentLength.text =
                             convertDuration(
