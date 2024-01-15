@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun clickMethod() {
         binding.closeBtn.setOnClickListener {
-            hideLayoutAnimation()
+            hideWithLayoutAnim()
         }
         binding.playBtn.setOnClickListener {
             binding.playBtn.visibility = View.GONE
@@ -107,9 +107,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     // Hiding layout with animation
-    private fun hideLayoutAnimation() {
+    private fun hideWithLayoutAnim() {
         val fromYDelta = 0f
-        val toYDelta = binding.playLin.height.toFloat()
+        val toYDelta = binding.mainRel.height.toFloat()
         val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
         animation.duration = 500
         animation.fillAfter = true
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
             override fun onAnimationEnd(p0: Animation?) {
                 binding.playLin.visibility = View.GONE
-                binding.musicRel.visibility = View.VISIBLE
+                showWithLayoutAnim()
                 setWindow(false)
             }
 
@@ -129,7 +129,17 @@ class MainActivity : AppCompatActivity(), MusicListener {
             }
 
         })
-        binding.playLin.startAnimation(animation)
+        binding.mainRel.startAnimation(animation)
+    }
+
+    private fun showWithLayoutAnim() {
+        binding.musicRel.visibility = View.VISIBLE
+        val fromYDelta = -binding.mainRel.height.toFloat()
+        val toYDelta = 0f
+        val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
+        animation.duration = 500
+        animation.fillAfter =true
+        binding.mainRel.startAnimation(animation)
     }
 
     private fun playAudio(uri: Uri) {
