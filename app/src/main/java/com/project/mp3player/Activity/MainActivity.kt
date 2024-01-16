@@ -108,44 +108,35 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     // Hiding layout with animation
     private fun hideWithLayoutAnim() {
-        val fromYDelta = 0f
-        val toYDelta = binding.mainRel.height.toFloat()
+        binding.playLin.visibility = View.GONE
+        showMusicLayoutAnim()
+        setWindow(false)
+    }
+
+    private fun showPlayLayoutAnim() {
+        val fromYDelta = binding.mainRel.height.toFloat()
+        val toYDelta = 0f
         val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
         animation.duration = 500
         animation.fillAfter = true
-        animation.setAnimationListener(object: Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-
-            }
-
-            override fun onAnimationEnd(p0: Animation?) {
-                binding.playLin.visibility = View.GONE
-                showWithLayoutAnim()
-                setWindow(false)
-            }
-
-            override fun onAnimationRepeat(p0: Animation?) {
-
-            }
-
-        })
         binding.mainRel.startAnimation(animation)
+        binding.playLin.visibility = View.VISIBLE
     }
 
-    private fun showWithLayoutAnim() {
-        binding.musicRel.visibility = View.VISIBLE
+    private fun showMusicLayoutAnim() {
         val fromYDelta = -binding.mainRel.height.toFloat()
         val toYDelta = 0f
         val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
         animation.duration = 500
         animation.fillAfter =true
         binding.mainRel.startAnimation(animation)
+        binding.musicRel.visibility = View.VISIBLE
     }
 
     private fun playAudio(uri: Uri) {
         if (serviceBound) {
             binding.musicRel.visibility = View.GONE
-            binding.playLin.visibility = View.VISIBLE
+            showPlayLayoutAnim()
             setWindow(true)
             mediaPlayerService.playAudio(uri)
         }

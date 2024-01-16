@@ -58,7 +58,30 @@
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/back" />
+            android:src="@drawable/back" 
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
+        
+        <ImageView
+            android:id="@+id/timerBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/stopwatch" 
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:tint="@color/white"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
+        
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieMusic"
