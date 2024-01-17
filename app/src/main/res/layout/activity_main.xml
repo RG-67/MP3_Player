@@ -71,16 +71,96 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:tint="@color/white"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"/>
         
         <LinearLayout
+            android:id="@+id/radioLin"
+            android:layout_below="@+id/timerBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:visibility="visible">
+            <RadioGroup
+                android:id="@+id/rdGroupBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <RadioButton
+                    android:id="@+id/fiveRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="5 min"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+
+                <RadioButton
+                    android:id="@+id/tenRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="10 min"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+
+                <RadioButton
+                    android:id="@+id/fifRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="15 min"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+
+                <RadioButton
+                    android:id="@+id/twRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="20 min"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+
+                <RadioButton
+                    android:id="@+id/tFiveRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="25 min"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+            </RadioGroup>
         </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView

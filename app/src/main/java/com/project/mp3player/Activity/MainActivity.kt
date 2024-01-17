@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.IBinder
 import android.provider.MediaStore
 import android.provider.OpenableColumns
@@ -17,12 +18,15 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.RadioGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.project.mp3player.Adapter.MusicAdapter
 import com.project.mp3player.ClickListener.MusicListener
 import com.project.mp3player.Modal.MusicModal
+import com.project.mp3player.R
 import com.project.mp3player.Service.MediaPlayerService
 import com.project.mp3player.databinding.ActivityMainBinding
 import java.util.Timer
@@ -36,6 +40,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     private val musicList: ArrayList<MusicModal> = ArrayList()
     private var musicAdapter: MusicAdapter? = null
     private var isUserSeeking = false
+    private var countDownTimer: CountDownTimer ?= null
 
     companion object {
         private const val MUSIC_REQUEST_CODE = 100
@@ -94,6 +99,22 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.closeBtn.setOnClickListener {
             hideWithLayoutAnim()
         }
+        binding.timerBtn.setOnClickListener {
+            showRadioWithAnim()
+        }
+        binding.rdGroupBtn.setOnCheckedChangeListener { _, _ ->
+            if (binding.fiveRdBtn.isChecked) {
+                startTimer(5 * 60 * 1000)
+            } else if (binding.tenRdBtn.isChecked) {
+                startTimer(10 * 60 * 1000)
+            } else if (binding.fifRdBtn.isChecked) {
+                startTimer(15 * 60 * 1000)
+            } else if (binding.twRdBtn.isChecked) {
+                startTimer(20 * 60 * 1000)
+            } else if (binding.tFiveRdBtn.isChecked) {
+                startTimer(25 * 60 * 1000)
+            }
+        }
         binding.playBtn.setOnClickListener {
             binding.playBtn.visibility = View.GONE
             binding.pauseBtn.visibility = View.VISIBLE
@@ -106,7 +127,46 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
     }
 
-    // Hiding layout with animation
+    private fun showRadioWithAnim() {
+        val fromXDelta = binding.radioLin.width.toFloat()
+        val toXDelta = 0f
+        val animation = TranslateAnimation(fromXDelta, toXDelta, 0f, 0f)
+        animation.duration = 500
+        animation.fillAfter = true
+        binding.radioLin.startAnimation(animation)
+        binding.rdGroupBtn.visibility = View.VISIBLE
+    }
+
+    private fun hideRadioWithAnim() {
+        val fromXDelta = 0f
+        val toXDelta = binding.radioLin.width.toFloat()
+        val animation = TranslateAnimation(fromXDelta, toXDelta, 0f, 0f)
+        animation.duration = 500
+        animation.fillAfter = true
+        binding.radioLin.startAnimation(animation)
+        binding.radioLin.visibility = View.GONE
+    }
+
+    private fun startTimer(duration: Long) {
+        hideRadioWithAnim()
+        binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple))
+        countDownTimer?.cancel()
+        countDownTimer = object: CountDownTimer(duration, 1000) {
+            override fun onTick(p0: Long) {
+
+            }
+            override fun onFinish() {
+                stopMediaPlayer()
+            }
+        }.start()
+    }
+
+    private fun stopMediaPlayer() {
+        countDownTimer?.cancel()
+        mediaPlayerService.setMediaPlayerPlayOrPause(false)
+        mediaPlayerService.onDestroy()
+    }
+
     private fun hideWithLayoutAnim() {
         binding.playLin.visibility = View.GONE
         showMusicLayoutAnim()
@@ -155,6 +215,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
             unbindService(connection)
             serviceBound = false
         }
+        mediaPlayerService.onDestroy()
+        countDownTimer?.cancel()
         super.onDestroy()
     }
 
