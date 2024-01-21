@@ -24,6 +24,7 @@ class MusicAdapter(
 ) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
 
     private var clickListener: MusicListener? = null
+    private var originalMusicList: List<MusicModal> = ArrayList()
 
     class ViewHolder(val binding: MusicListItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -54,6 +55,24 @@ class MusicAdapter(
 
     fun setClickListener(listener: MusicListener) {
         this.clickListener = listener
+    }
+
+    fun setMusicList(newList: List<MusicModal>) {
+        originalMusicList = ArrayList(newList)
+        updateDisplayedList("")
+    }
+
+    fun updateDisplayedList(query: String) {
+        musicList.clear()
+        if (query.isEmpty()) {
+            musicList.addAll(originalMusicList)
+        } else {
+            val filteredList = originalMusicList.filter { music ->
+                music.getMusicTitle()!!.contains(query, ignoreCase = true) == true
+            }
+            musicList.addAll(filteredList)
+        }
+        notifyDataSetChanged()
     }
 
 }

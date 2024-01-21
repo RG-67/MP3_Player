@@ -14,6 +14,8 @@ import android.os.CountDownTimer
 import android.os.IBinder
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
@@ -29,6 +31,7 @@ import com.project.mp3player.Modal.MusicModal
 import com.project.mp3player.R
 import com.project.mp3player.Service.MediaPlayerService
 import com.project.mp3player.databinding.ActivityMainBinding
+import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     private var musicAdapter: MusicAdapter? = null
     private var isUserSeeking = false
     private var countDownTimer: CountDownTimer ?= null
+    private var bl = true
 
     companion object {
         private const val MUSIC_REQUEST_CODE = 100
@@ -93,14 +97,33 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.musicRecycler.setHasFixedSize(true)
         binding.musicRecycler.adapter = musicAdapter
         musicAdapter?.setClickListener(this)
+        musicAdapter?.setMusicList(musicList)
     }
 
     private fun clickMethod() {
         binding.closeBtn.setOnClickListener {
             hideWithLayoutAnim()
         }
+        binding.edtSearch.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    musicAdapter?.updateDisplayedList(p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
         binding.timerBtn.setOnClickListener {
-            showRadioWithAnim()
+            if (bl) {
+                showRadioWithAnim()
+            } else {
+                hideRadioWithAnim()
+            }
         }
         binding.rdGroupBtn.setOnCheckedChangeListener { _, _ ->
             if (binding.fiveRdBtn.isChecked) {
@@ -135,6 +158,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         animation.fillAfter = true
         binding.radioLin.startAnimation(animation)
         binding.rdGroupBtn.visibility = View.VISIBLE
+        bl = false
     }
 
     private fun hideRadioWithAnim() {
@@ -145,6 +169,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         animation.fillAfter = true
         binding.radioLin.startAnimation(animation)
         binding.radioLin.visibility = View.GONE
+        bl = true
     }
 
     private fun startTimer(duration: Long) {
