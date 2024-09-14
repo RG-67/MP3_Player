@@ -31,6 +31,7 @@ import com.project.mp3player.Modal.MusicModal
 import com.project.mp3player.R
 import com.project.mp3player.Service.MediaPlayerService
 import com.project.mp3player.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
 import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     private val musicList: ArrayList<MusicModal> = ArrayList()
     private var musicAdapter: MusicAdapter? = null
     private var isUserSeeking = false
-    private var countDownTimer: CountDownTimer ?= null
+    private var countDownTimer: CountDownTimer? = null
     private var bl = true
 
     companion object {
@@ -104,13 +105,13 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.closeBtn.setOnClickListener {
             hideWithLayoutAnim()
         }
-        binding.edtSearch.addTextChangedListener(object: TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    musicAdapter?.updateDisplayedList(p0.toString())
+                musicAdapter?.updateDisplayedList(p0.toString())
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -176,10 +177,11 @@ class MainActivity : AppCompatActivity(), MusicListener {
         hideRadioWithAnim()
         binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple))
         countDownTimer?.cancel()
-        countDownTimer = object: CountDownTimer(duration, 1000) {
+        countDownTimer = object : CountDownTimer(duration, 1000) {
             override fun onTick(p0: Long) {
 
             }
+
             override fun onFinish() {
                 stopMediaPlayer()
             }
@@ -213,7 +215,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         val toYDelta = 0f
         val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
         animation.duration = 500
-        animation.fillAfter =true
+        animation.fillAfter = true
         binding.mainRel.startAnimation(animation)
         binding.musicRel.visibility = View.VISIBLE
     }
@@ -431,6 +433,16 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.currentLength.text = musicTime
         setProgressSeekbar(duration.toLong())
         setForAndBackClick(duration)
+    }
+
+    override fun onBackPressed() {
+        if (binding.playLin.visibility == View.VISIBLE) {
+            binding.playLin.visibility = View.GONE
+            showMusicLayoutAnim()
+            setWindow(false)
+        } else {
+            super.onBackPressed()
+        }
     }
 
 
