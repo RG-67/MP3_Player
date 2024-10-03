@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         bl = false
     }
 
+
     private fun hideRadioWithAnim() {
         val fromXDelta = 0f
         val toXDelta = binding.radioLin.width.toFloat()
