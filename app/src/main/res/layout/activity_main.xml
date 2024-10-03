@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainRel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.MainActivity"
-    android:id="@+id/mainRel">
+    tools:context=".Activity.MainActivity">
 
     <!-- Music list -->
     <RelativeLayout
@@ -13,33 +13,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/edit_bg"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
-        android:drawableEnd="@drawable/search"
-        android:hint="Search here.."
-        android:textSize="12sp"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/grey"
-        android:fontFamily="sans-serif"
-        android:textStyle="normal"
-        android:inputType="text"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/musicRecycler"
-        android:layout_below="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/music_list_item"
-        tools:itemCount="5"
-        android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/edit_bg"
+            android:drawableEnd="@drawable/search"
+            android:fontFamily="sans-serif"
+            android:hint="Search here.."
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/musicRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtSearch"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/music_list_item" />
     </RelativeLayout>
 
     <!-- Play music -->
@@ -58,136 +59,125 @@
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/back" 
-            android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true"/>
-        
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/back" />
+
         <ImageView
             android:id="@+id/timerBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/stopwatch" 
             android:layout_alignParentEnd="true"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-<<<<<<< HEAD
-            android:tint="@color/white"
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"/>
-=======
-            android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/stopwatch"
             app:tint="@color/white" />
->>>>>>> d28ab4b (bug fixes and features added)
-        
+
         <LinearLayout
             android:id="@+id/radioLin"
-            android:layout_below="@+id/timerBtn"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_below="@+id/timerBtn"
             android:layout_alignParentEnd="true"
+            android:orientation="vertical"
             android:visibility="visible">
+
             <RadioGroup
                 android:id="@+id/rdGroupBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-<<<<<<< HEAD
-=======
 
->>>>>>> d28ab4b (bug fixes and features added)
                 <RadioButton
                     android:id="@+id/fiveRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="5 min"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/tenRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="10 min"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/fifRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="15 min"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/twRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="20 min"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
+                    android:textSize="15sp" />
 
                 <RadioButton
                     android:id="@+id/tFiveRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="25 min"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
-<<<<<<< HEAD
-=======
+                    android:textSize="15sp" />
+
 
                 <RadioButton
                     android:id="@+id/cancelRdBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/radio_flat_selector"
                     android:button="@color/transparent"
+                    android:fontFamily="@font/calibri_bold"
+                    android:gravity="center"
                     android:text="Cancel Timer"
                     android:textColor="@drawable/radio_flat_text_selector"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/calibri_bold"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="2dp"/>
->>>>>>> d28ab4b (bug fixes and features added)
+                    android:textSize="15sp" />
             </RadioGroup>
         </LinearLayout>
 
@@ -195,130 +185,123 @@
             android:id="@+id/lottieMusic"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:lottie_rawRes="@raw/music_rhythm"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"
             android:layout_centerInParent="true"
-            app:lottie_colorFilter="@color/purple"/>
+            app:lottie_autoPlay="true"
+            app:lottie_colorFilter="@color/purple"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/music_rhythm" />
 
         <RelativeLayout
             android:id="@+id/timeRel"
-            android:layout_below="@+id/lottieMusic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/lottieMusic"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="5dp">
+
             <TextView
                 android:id="@+id/originalLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/calibri_normal"
                 android:text="0:00"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                android:fontFamily="@font/calibri_normal"
-                android:layout_alignParentStart="true"/>
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/currentLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/calibri_normal"
                 android:text="0:00"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                android:fontFamily="@font/calibri_normal"
-                android:layout_alignParentEnd="true"/>
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/progressSeekBar"
-            android:layout_below="@+id/timeRel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:progressBackgroundTint="@color/purple"/>
+            android:layout_below="@+id/timeRel"
+            android:progressBackgroundTint="@color/purple" />
 
         <LinearLayout
             android:id="@+id/playStyleLin"
-            android:layout_below="@+id/progressSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/progressSeekBar"
+            android:layout_marginVertical="20dp"
             android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_marginVertical="20dp">
+            android:weightSum="3">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
+
                 <ImageView
                     android:id="@+id/backwardBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/forward"
-                    android:rotation="180"
-                    android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-<<<<<<< HEAD
-                    android:tint="@color/purple"/>
-=======
+                    android:foreground="?attr/selectableItemBackground"
+                    android:rotation="180"
+                    android:src="@drawable/forward"
                     app:tint="@color/purple" />
->>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
+
                 <ImageView
                     android:id="@+id/playBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/play"
-                    android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:src="@drawable/play"
                     android:visibility="gone"
-<<<<<<< HEAD
-                    android:tint="@color/purple"/>
-=======
                     app:tint="@color/purple" />
->>>>>>> d28ab4b (bug fixes and features added)
 
                 <ImageView
                     android:id="@+id/pauseBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pause"
-                    android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:src="@drawable/pause"
                     android:visibility="visible"
-<<<<<<< HEAD
-                    android:tint="@color/purple"/>
-=======
                     app:tint="@color/purple" />
->>>>>>> d28ab4b (bug fixes and features added)
+
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
+
                 <ImageView
                     android:id="@+id/forwardBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/forward"
-                    android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
-<<<<<<< HEAD
-                    android:tint="@color/purple"/>
-=======
+                    android:foreground="?attr/selectableItemBackground"
+                    android:src="@drawable/forward"
                     app:tint="@color/purple" />
->>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
         </LinearLayout>
 

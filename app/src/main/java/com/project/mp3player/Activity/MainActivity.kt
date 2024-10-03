@@ -46,12 +46,9 @@ class MainActivity : AppCompatActivity(), MusicListener {
     private var isUserSeeking = false
     private var countDownTimer: CountDownTimer? = null
     private var bl = true
-<<<<<<< HEAD
-=======
     private var timer: Timer? = null
     private var timerTask: TimerTask? = null
     private var isTimerRunning = false
->>>>>>> d28ab4b (bug fixes and features added)
 
     companion object {
         private const val MUSIC_REQUEST_CODE = 100
@@ -134,19 +131,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         }
         binding.rdGroupBtn.setOnCheckedChangeListener { _, _ ->
             if (binding.fiveRdBtn.isChecked) {
-<<<<<<< HEAD
                 startTimer(5 * 60 * 1000)
-            } else if (binding.tenRdBtn.isChecked) {
-                startTimer(10 * 60 * 1000)
-            } else if (binding.fifRdBtn.isChecked) {
-                startTimer(15 * 60 * 1000)
-            } else if (binding.twRdBtn.isChecked) {
-                startTimer(20 * 60 * 1000)
-            } else if (binding.tFiveRdBtn.isChecked) {
-                startTimer(25 * 60 * 1000)
-=======
-//                startTimer(5 * 60 * 1000)
-                startTimer((0.17 * 60 * 1000).toLong())
             } else if (binding.tenRdBtn.isChecked) {
                 startTimer(10 * 60 * 1000)
 
@@ -163,7 +148,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.white))
                 binding.cancelRdBtn.isChecked = false
                 countDownTimer?.cancel()
->>>>>>> d28ab4b (bug fixes and features added)
             }
         }
         binding.playBtn.setOnClickListener {
@@ -216,19 +200,12 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     private fun stopMediaPlayer() {
-<<<<<<< HEAD
-        countDownTimer?.cancel()
-        mediaPlayerService.setMediaPlayerPlayOrPause(false)
-        mediaPlayerService.onDestroy()
-=======
         binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.white))
         binding.rdGroupBtn.clearCheck()
         binding.pauseBtn.visibility = View.GONE
         binding.playBtn.visibility = View.VISIBLE
         countDownTimer?.cancel()
         mediaPlayerService.setMediaPlayerPlayOrPause(false)
-//        mediaPlayerService.onDestroy()
->>>>>>> d28ab4b (bug fixes and features added)
     }
 
     private fun hideWithLayoutAnim() {
@@ -245,11 +222,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
         animation.fillAfter = true
         binding.mainRel.startAnimation(animation)
         binding.playLin.visibility = View.VISIBLE
-<<<<<<< HEAD
-=======
         binding.playBtn.visibility = View.GONE
         binding.pauseBtn.visibility = View.VISIBLE
->>>>>>> d28ab4b (bug fixes and features added)
     }
 
     private fun showMusicLayoutAnim() {
@@ -378,10 +352,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     private fun setProgressSeekbar(duration: Long) {
-<<<<<<< HEAD
-=======
         stopTimer()
->>>>>>> d28ab4b (bug fixes and features added)
         binding.progressSeekBar.max = duration.toInt()
         binding.progressSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -401,18 +372,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 mediaPlayerService.setMediaPlayingLength(newPosition)
             }
         })
-<<<<<<< HEAD
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                runOnUiThread {
-                    try {
-                        if (!isUserSeeking) {
-                            binding.progressSeekBar.progress =
-                                mediaPlayerService.getCurrentPosition()
-                        }
-                        binding.currentLength.text =
-                            convertDuration(
-=======
         setTimer(duration)
     }
 
@@ -427,20 +386,11 @@ class MainActivity : AppCompatActivity(), MusicListener {
                                     mediaPlayerService.getCurrentPosition()
                             }
                             binding.currentLength.text = convertDuration(
->>>>>>> d28ab4b (bug fixes and features added)
                                 calculateRemainingTime(
                                     duration,
                                     mediaPlayerService.getCurrentPosition().toLong()
                                 )
                             )
-<<<<<<< HEAD
-                    } catch (e: Exception) {
-
-                    }
-                }
-            }
-        }, 0, 1000)
-=======
                         } catch (_: Exception) {
                         }
                     }
@@ -457,7 +407,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
         timerTask = null
         timer = null
         isTimerRunning = false
->>>>>>> d28ab4b (bug fixes and features added)
     }
 
     private fun setForAndBackClick(duration: Int) {

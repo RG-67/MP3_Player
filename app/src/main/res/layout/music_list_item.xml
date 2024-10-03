@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/edit_bg">
+        android:background="@drawable/edit_bg"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="5dp">
+            android:orientation="horizontal"
+            android:weightSum="3">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/musicImage"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceImage"
-                    android:src="@drawable/music"
-<<<<<<< HEAD
                     android:background="@color/purple"
-                    android:tint="@color/white" />
-=======
-                    android:background="@color/purple"/>
->>>>>>> d28ab4b (bug fixes and features added)
+                    android:src="@drawable/music"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceImage" />
+
+
             </LinearLayout>
 
             <!-- Music Lin1 -->
@@ -42,31 +41,32 @@
                 android:id="@+id/musicLin"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.8"
-                android:orientation="vertical"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1.8"
                 android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:visibility="visible">
+
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri_bold"
                     android:text="Title"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/calibri_bold"
                     android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/musicBy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/calibri_normal"
                     android:text="Music by"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/calibri_normal"
                     android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="2dp"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Music Lin2 -->
@@ -76,88 +76,96 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.8"
                 android:orientation="horizontal"
-                android:weightSum="3"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:weightSum="3">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="5dp">
+
                     <ImageView
                         android:id="@+id/backwardBtn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/forward"
-                        android:rotation="180"
-                        android:foreground="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:rotation="180"
+                        android:src="@drawable/forward" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="5dp">
+
                     <ImageView
                         android:id="@+id/playBtn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/play"
-                        android:foreground="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:visibility="gone"/>
+                        android:foreground="?attr/selectableItemBackground"
+                        android:src="@drawable/play"
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/pauseBtn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/pause"
-                        android:foreground="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:src="@drawable/pause" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="5dp">
+
                     <ImageView
                         android:id="@+id/forwardBtn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/forward"
-                        android:foreground="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:focusable="true"/>
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:src="@drawable/forward" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
                 android:layout_gravity="center"
+                android:layout_weight="0.7"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/playSignal"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:src="@drawable/dot"/>
+                    android:src="@drawable/dot" />
+
                 <TextView
                     android:id="@+id/musicTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/calibri_normal"
                     android:text="0:00"
                     android:textColor="@color/grey"
-                    android:fontFamily="@font/calibri_normal"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="2dp"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
@@ -167,10 +175,10 @@
             android:id="@+id/progressCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:layout_marginHorizontal="10dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
