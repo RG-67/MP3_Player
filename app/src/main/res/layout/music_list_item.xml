@@ -29,8 +29,12 @@
                     android:layout_height="50dp"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceImage"
                     android:src="@drawable/music"
+<<<<<<< HEAD
                     android:background="@color/purple"
                     android:tint="@color/white" />
+=======
+                    android:background="@color/purple"/>
+>>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
 
             <!-- Music Lin1 -->

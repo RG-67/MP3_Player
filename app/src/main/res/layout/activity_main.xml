@@ -72,10 +72,17 @@
             android:layout_marginTop="35dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
+<<<<<<< HEAD
             android:tint="@color/white"
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"/>
+=======
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:tint="@color/white" />
+>>>>>>> d28ab4b (bug fixes and features added)
         
         <LinearLayout
             android:id="@+id/radioLin"
@@ -91,6 +98,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+<<<<<<< HEAD
+=======
+
+>>>>>>> d28ab4b (bug fixes and features added)
                 <RadioButton
                     android:id="@+id/fiveRdBtn"
                     android:layout_width="match_parent"
@@ -160,6 +171,23 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_marginBottom="2dp"/>
+<<<<<<< HEAD
+=======
+
+                <RadioButton
+                    android:id="@+id/cancelRdBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@color/transparent"
+                    android:text="Cancel Timer"
+                    android:textColor="@drawable/radio_flat_text_selector"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/calibri_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp"/>
+>>>>>>> d28ab4b (bug fixes and features added)
             </RadioGroup>
         </LinearLayout>
 
@@ -230,7 +258,11 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
+<<<<<<< HEAD
                     android:tint="@color/purple"/>
+=======
+                    app:tint="@color/purple" />
+>>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -247,7 +279,11 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="gone"
+<<<<<<< HEAD
                     android:tint="@color/purple"/>
+=======
+                    app:tint="@color/purple" />
+>>>>>>> d28ab4b (bug fixes and features added)
 
                 <ImageView
                     android:id="@+id/pauseBtn"
@@ -258,7 +294,11 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:visibility="visible"
+<<<<<<< HEAD
                     android:tint="@color/purple"/>
+=======
+                    app:tint="@color/purple" />
+>>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -274,7 +314,11 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
+<<<<<<< HEAD
                     android:tint="@color/purple"/>
+=======
+                    app:tint="@color/purple" />
+>>>>>>> d28ab4b (bug fixes and features added)
             </LinearLayout>
         </LinearLayout>
 

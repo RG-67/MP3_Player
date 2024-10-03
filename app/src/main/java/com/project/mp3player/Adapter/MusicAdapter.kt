@@ -44,8 +44,20 @@ class MusicAdapter(
         holder.binding.musicTime.text = modal.getMusicTime()
 
         holder.itemView.setOnClickListener {
+<<<<<<< HEAD
             clickListener?.onClick(position, modal.getMusicMp3(), modal.getOriginalTime().toInt(), modal.getMusicTime())
             onItemClickListener.invoke(modal.getMusicMp3())
+=======
+            clickListener?.onClick(
+                position,
+                modal.getMusicMp3(),
+                modal.getOriginalTime().toInt(),
+                modal.getMusicTime()
+            )
+            onItemClickListener.invoke(
+                modal.getMusicMp3()
+            )
+>>>>>>> d28ab4b (bug fixes and features added)
         }
     }
 
