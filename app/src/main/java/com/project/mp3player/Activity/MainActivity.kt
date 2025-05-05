@@ -7,22 +7,16 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.IBinder
+import android.os.*
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.widget.RadioGroup
 import android.widget.SeekBar
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.project.mp3player.Adapter.MusicAdapter
@@ -31,10 +25,8 @@ import com.project.mp3player.Modal.MusicModal
 import com.project.mp3player.R
 import com.project.mp3player.Service.MediaPlayerService
 import com.project.mp3player.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
-import java.util.Locale
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), MusicListener {
 
@@ -59,12 +51,31 @@ class MainActivity : AppCompatActivity(), MusicListener {
             val binder = p1 as MediaPlayerService.LocalBinder
             mediaPlayerService = binder.getService()
             serviceBound = true
+
+            val (lastUri, lastPosition) = loadPlaybackState()
+            if (lastUri != null) {
+                mediaPlayerService.prepareAudioAtPosition(lastUri, lastPosition)
+
+                binding.musicRel.visibility = View.GONE
+                showPlayLayoutAnim()
+                setWindow(true)
+                binding.pauseBtn.visibility = View.GONE
+                binding.playBtn.visibility = View.VISIBLE
+
+                val duration = mediaPlayerService.getDuration()
+                setProgressSeekbar(duration.toLong())
+                setForAndBackClick(duration)
+
+                binding.originalLength.text = convertDuration(duration.toLong())
+                binding.currentLength.text = convertDuration((duration - lastPosition).toLong())
+
+                binding.progressSeekBar.progress = lastPosition
+            }
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
             serviceBound = false
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +86,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         checkPermission()
         setDefault()
         clickMethod()
-
     }
-
 
     private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -96,7 +105,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
         val intent = Intent(this, MediaPlayerService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
         musicAdapter = MusicAdapter(this, musicList) { clickedUri ->
-            playAudio(clickedUri)
+
+            setCurrentTrackUri(clickedUri)
         }
         binding.musicRecycler.setHasFixedSize(true)
         binding.musicRecycler.adapter = musicAdapter
@@ -109,56 +119,50 @@ class MainActivity : AppCompatActivity(), MusicListener {
             hideWithLayoutAnim()
         }
         binding.edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 musicAdapter?.updateDisplayedList(p0.toString())
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
+            override fun afterTextChanged(p0: Editable?) {}
         })
+
         binding.timerBtn.setOnClickListener {
-            if (bl) {
-                showRadioWithAnim()
-            } else {
-                hideRadioWithAnim()
-            }
+            if (bl) showRadioWithAnim() else hideRadioWithAnim()
         }
+
         binding.rdGroupBtn.setOnCheckedChangeListener { _, _ ->
-            if (binding.fiveRdBtn.isChecked) {
-                startTimer(5 * 60 * 1000)
-            } else if (binding.tenRdBtn.isChecked) {
-                startTimer(10 * 60 * 1000)
-
-            } else if (binding.fifRdBtn.isChecked) {
-                startTimer(15 * 60 * 1000)
-
-            } else if (binding.twRdBtn.isChecked) {
-                startTimer(20 * 60 * 1000)
-
-            } else if (binding.tFiveRdBtn.isChecked) {
-                startTimer(25 * 60 * 1000)
-            } else {
-                hideRadioWithAnim()
-                binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.white))
-                binding.cancelRdBtn.isChecked = false
-                countDownTimer?.cancel()
+            when {
+                binding.fiveRdBtn.isChecked -> startTimer(5 * 60 * 1000)
+                binding.tenRdBtn.isChecked -> startTimer(10 * 60 * 1000)
+                binding.fifRdBtn.isChecked -> startTimer(15 * 60 * 1000)
+                binding.twRdBtn.isChecked -> startTimer(20 * 60 * 1000)
+                binding.tFiveRdBtn.isChecked -> startTimer(25 * 60 * 1000)
+                else -> {
+                    hideRadioWithAnim()
+                    binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.white))
+                    binding.cancelRdBtn.isChecked = false
+                    countDownTimer?.cancel()
+                }
             }
         }
+
         binding.playBtn.setOnClickListener {
             binding.playBtn.visibility = View.GONE
             binding.pauseBtn.visibility = View.VISIBLE
             mediaPlayerService.setMediaPlayerPlayOrPause(true)
         }
+
         binding.pauseBtn.setOnClickListener {
             binding.pauseBtn.visibility = View.GONE
             binding.playBtn.visibility = View.VISIBLE
             mediaPlayerService.setMediaPlayerPlayOrPause(false)
+
+
+            savePlaybackState(
+                mediaPlayerService.getCurrentTrackUri(),
+                mediaPlayerService.getCurrentPosition()
+            )
         }
     }
 
@@ -172,7 +176,6 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.rdGroupBtn.visibility = View.VISIBLE
         bl = false
     }
-
 
     private fun hideRadioWithAnim() {
         val fromXDelta = 0f
@@ -190,10 +193,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple))
         countDownTimer?.cancel()
         countDownTimer = object : CountDownTimer(duration, 1000) {
-            override fun onTick(p0: Long) {
-
-            }
-
+            override fun onTick(p0: Long) {}
             override fun onFinish() {
                 stopMediaPlayer()
             }
@@ -217,8 +217,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun showPlayLayoutAnim() {
         val fromYDelta = binding.mainRel.height.toFloat()
-        val toYDelta = 0f
-        val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
+        val animation = TranslateAnimation(0f, 0f, fromYDelta, 0f)
         animation.duration = 500
         animation.fillAfter = true
         binding.mainRel.startAnimation(animation)
@@ -229,8 +228,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun showMusicLayoutAnim() {
         val fromYDelta = -binding.mainRel.height.toFloat()
-        val toYDelta = 0f
-        val animation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
+        val animation = TranslateAnimation(0f, 0f, fromYDelta, 0f)
         animation.duration = 500
         animation.fillAfter = true
         binding.mainRel.startAnimation(animation)
@@ -247,11 +245,8 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     private fun setWindow(bl: Boolean) {
-        if (bl) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }
+        if (bl) window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        else window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
     override fun onDestroy() {
@@ -274,7 +269,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
     private fun getAudioFiles(): List<Uri> {
         val audioFiles = mutableListOf<Uri>()
         val externalContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(MediaStore.Audio.Media._ID, MediaStore.Audio.Media.DATA)
+        val projection = arrayOf(MediaStore.Audio.Media._ID)
         val cursor = contentResolver.query(externalContentUri, projection, null, null, null)
         cursor?.use {
             while (it.moveToNext()) {
@@ -291,25 +286,14 @@ class MainActivity : AppCompatActivity(), MusicListener {
             retriever.setDataSource(this, audioUri)
             val musicFileName = getFileNameFromUri(audioUri)
             val artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
-            val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-            val album = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
             val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
             val thumbnailBytes = retriever.embeddedPicture
 
             val runningTime = convertDuration(duration?.toLong() ?: 0)
-            if (thumbnailBytes != null) {
-//                val bitmap = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.size)
-                duration?.let {
-                    MusicModal(
-                        audioUri, musicFileName, artist, it, runningTime, thumbnailBytes
-                    )
-                }?.let { musicList.add(it) }
-            } else {
-                duration?.let {
-                    MusicModal(
-                        audioUri, musicFileName, artist, it, runningTime, thumbnailBytes
-                    )
-                }?.let { musicList.add(it) }
+            duration?.let {
+                val modal =
+                    MusicModal(audioUri, musicFileName, artist, it, runningTime, thumbnailBytes)
+                musicList.add(modal)
             }
             musicAdapter?.notifyDataSetChanged()
             retriever.release()
@@ -325,9 +309,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
                 if (it.moveToFirst()) {
                     val displayName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                     displayName ?: uri.lastPathSegment ?: "UnknownFileName"
-                } else {
-                    "UnknownFileName"
-                }
+                } else "UnknownFileName"
             } ?: "UnknownFileName"
         } finally {
             cursor?.close()
@@ -335,21 +317,11 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     private fun convertDuration(duration: Long): String {
-        var finalTimeString = ""
-        val secondString: String
         val hours = (duration / (1000 * 60 * 60)).toInt()
         val minutes = ((duration % (1000 * 60 * 60)) / (1000 * 60)).toInt()
-        val seconds = ((duration % (1000 * 60 * 60)) % (1000 * 60) / 1000).toInt()
-        if (hours > 0) {
-            finalTimeString = "$hours:"
-        }
-        secondString = if (seconds < 10) {
-            "0$seconds"
-        } else {
-            "$seconds"
-        }
-        finalTimeString = "$finalTimeString$minutes:$secondString"
-        return finalTimeString
+        val seconds = ((duration % (1000 * 60)) / 1000).toInt()
+        return if (hours > 0) "$hours:$minutes:${"%02d".format(seconds)}"
+        else "$minutes:${"%02d".format(seconds)}"
     }
 
     private fun setProgressSeekbar(duration: Long) {
@@ -358,9 +330,7 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.progressSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if (p2) {
-                    isUserSeeking = true
-                }
+                if (p2) isUserSeeking = true
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -377,30 +347,21 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
     private fun setTimer(duration: Long) {
-        if (timerTask == null) {
-            timerTask = object : TimerTask() {
-                override fun run() {
-                    runOnUiThread {
-                        try {
-                            if (!isUserSeeking) {
-                                binding.progressSeekBar.progress =
-                                    mediaPlayerService.getCurrentPosition()
-                            }
-                            binding.currentLength.text = convertDuration(
-                                calculateRemainingTime(
-                                    duration,
-                                    mediaPlayerService.getCurrentPosition().toLong()
-                                )
-                            )
-                        } catch (_: Exception) {
-                        }
+        timerTask = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    if (!isUserSeeking) {
+                        binding.progressSeekBar.progress = mediaPlayerService.getCurrentPosition()
                     }
+                    binding.currentLength.text = convertDuration(
+                        duration - mediaPlayerService.getCurrentPosition()
+                    )
                 }
             }
-            timer = Timer()
-            timer?.scheduleAtFixedRate(timerTask, 0, 1000) // Schedule the task every second
-            isTimerRunning = true
         }
+        timer = Timer()
+        timer?.scheduleAtFixedRate(timerTask, 0, 1000)
+        isTimerRunning = true
     }
 
     private fun stopTimer() {
@@ -412,43 +373,21 @@ class MainActivity : AppCompatActivity(), MusicListener {
 
     private fun setForAndBackClick(duration: Int) {
         binding.backwardBtn.setOnClickListener {
-            val backward = 15000
-            val newPosition = mediaPlayerService.getCurrentPosition() - backward
-            if (newPosition > 0) {
-                mediaPlayerService.setMediaPlayingLength(newPosition)
-                if (!isUserSeeking) {
-                    binding.progressSeekBar.progress = newPosition
-                }
-            } else {
-                mediaPlayerService.setMediaPlayingLength(0)
-                if (!isUserSeeking) {
-                    binding.progressSeekBar.progress = 0
-                }
-            }
+            val newPos = (mediaPlayerService.getCurrentPosition() - 15000).coerceAtLeast(0)
+            mediaPlayerService.setMediaPlayingLength(newPos)
+            if (!isUserSeeking) binding.progressSeekBar.progress = newPos
         }
         binding.forwardBtn.setOnClickListener {
-            val forwardTime = 15000
-            val newPosition = mediaPlayerService.getCurrentPosition() + forwardTime
-            if (newPosition < duration) {
-                mediaPlayerService.setMediaPlayingLength(newPosition)
-                if (!isUserSeeking) {
-                    binding.progressSeekBar.progress = newPosition
-                }
-            } else {
-                mediaPlayerService.setMediaPlayingLength(duration)
-                if (!isUserSeeking) {
-                    binding.progressSeekBar.progress = duration
-                }
-            }
+            val newPos = (mediaPlayerService.getCurrentPosition() + 15000).coerceAtMost(duration)
+            mediaPlayerService.setMediaPlayingLength(newPos)
+            if (!isUserSeeking) binding.progressSeekBar.progress = newPos
         }
-    }
-
-    private fun calculateRemainingTime(totalDuration: Long, currentTime: Long): Long {
-        return totalDuration - currentTime
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MUSIC_REQUEST_CODE) {
@@ -465,6 +404,12 @@ class MainActivity : AppCompatActivity(), MusicListener {
         binding.currentLength.text = musicTime
         setProgressSeekbar(duration.toLong())
         setForAndBackClick(duration)
+
+
+        savePlaybackState(uri, 0)
+
+        binding.playBtn.visibility = View.VISIBLE
+        binding.pauseBtn.visibility = View.GONE
     }
 
     override fun onBackPressed() {
@@ -478,4 +423,33 @@ class MainActivity : AppCompatActivity(), MusicListener {
     }
 
 
+    private fun savePlaybackState(uri: Uri?, position: Int) {
+        if (uri == null) return
+        val prefs = getSharedPreferences("PlaybackPrefs", Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putString("last_uri", uri.toString())
+            putInt("last_position", position)
+            apply()
+        }
+    }
+
+
+    private fun loadPlaybackState(): Pair<Uri?, Int> {
+        val prefs = getSharedPreferences("PlaybackPrefs", Context.MODE_PRIVATE)
+        val uriStr = prefs.getString("last_uri", null)
+        val position = prefs.getInt("last_position", 0)
+        return if (uriStr != null) Uri.parse(uriStr) to position else null to 0
+    }
+
+    // Set the URI after selecting it
+    private fun setCurrentTrackUri(uri: Uri) {
+        binding.musicRel.visibility = View.GONE
+        showPlayLayoutAnim()
+        setWindow(true)
+        mediaPlayerService.playAudio(uri)
+
+        // Set the current duration on Seekbar
+        mediaPlayerService.setMediaPlayingLength(0)  // Start from beginning
+        binding.progressSeekBar.progress = 0
+    }
 }
